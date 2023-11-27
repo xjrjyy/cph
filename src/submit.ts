@@ -1,6 +1,6 @@
 import { getProblem } from './parser';
 import * as vscode from 'vscode';
-import { storeSubmitProblem, submitKattisProblem } from './companion';
+import { storeSubmitCodeForcesProblem, submitKattisProblem } from './companion';
 import { getJudgeViewProvider } from './extension';
 import telmetry from './telmetry';
 
@@ -80,14 +80,30 @@ export const submitToCodeForces = async () => {
         return;
     }
 
-    storeSubmitProblem(problem);
+    storeSubmitCodeForcesProblem(problem);
     getJudgeViewProvider().extensionToJudgeViewMessage({
         command: 'waiting-for-submit',
     });
 };
 
+/** Get the problem name ( like c ) for a given URL string. */
+export const getProblemShortName = (problemUrl: string): string | null => {
+    if (new URL(problemUrl).hostname === 'codeforces.com') {
+        const parts = problemUrl.split('/');
+        return parts[parts.length - 1].toLowerCase();
+    }
+    if (new URL(problemUrl).hostname === 'atcoder.jp') {
+        const parts = problemUrl.split('/');
+        const name = parts[parts.length - 1];
+        return name.charAt(name.length - 1).toLowerCase();
+    }
+    // TODO
+
+    return null;
+};
+
 /** Get the problem name ( like 144C ) for a given Codeforces URL string. */
-export const getProblemName = (problemUrl: string): string => {
+export const getCodeForcesProblemName = (problemUrl: string): string => {
     const parts = problemUrl.split('/');
     let problemName: string;
 

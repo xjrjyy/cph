@@ -76,6 +76,9 @@ export const getDefaultLangPref = (): string | null => {
     return pref;
 };
 
+export const useShortName = (): boolean => {
+    return getPreference('general.useShortName');
+};
 export const useShortCodeForcesName = (): boolean => {
     return getPreference('general.useShortCodeForcesName');
 };

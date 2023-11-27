@@ -10,6 +10,7 @@ export type prefSection =
     | 'general.hideStderrorWhenCompiledOK'
     | 'general.ignoreSTDERROR'
     | 'general.firstTime'
+    | 'general.useShortName'
     | 'general.useShortCodeForcesName'
     | 'general.menuChoices'
     | 'language.c.Args'

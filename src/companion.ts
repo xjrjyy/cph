@@ -9,11 +9,12 @@ import { isCodeforcesUrl, randomId } from './utils';
 import {
     getDefaultLangPref,
     getLanguageId,
+    useShortName,
     useShortCodeForcesName,
     getMenuChoices,
     getDefaultLanguageTemplateFileLocation,
 } from './preferences';
-import { getProblemName } from './submit';
+import { getProblemShortName, getCodeForcesProblemName } from './submit';
 import { spawn } from 'child_process';
 import { getJudgeViewProvider } from './extension';
 import { words_in_text } from './utilsPure';
@@ -76,9 +77,9 @@ export const submitKattisProblem = (problem: Problem) => {
 };
 
 /** Stores a response to be submitted to CF page soon. */
-export const storeSubmitProblem = (problem: Problem) => {
+export const storeSubmitCodeForcesProblem = (problem: Problem) => {
     const srcPath = problem.srcPath;
-    const problemName = getProblemName(problem.url);
+    const problemName = getCodeForcesProblemName(problem.url);
     const sourceCode = readFileSync(srcPath).toString();
     const languageId = getLanguageId(problem.srcPath);
     savedResponse = {
@@ -146,8 +147,14 @@ export const setupCompanionServer = () => {
 };
 
 export const getProblemFileName = (problem: Problem, ext: string) => {
+    if (useShortName()) {
+        const name = getProblemShortName(problem.url);
+        if (name) {
+            return `${name}.${ext}`;
+        }
+    }
     if (isCodeforcesUrl(new URL(problem.url)) && useShortCodeForcesName()) {
-        return `${getProblemName(problem.url)}.${ext}`;
+        return `${getCodeForcesProblemName(problem.url)}.${ext}`;
     } else {
         console.log(
             isCodeforcesUrl(new URL(problem.url)),
