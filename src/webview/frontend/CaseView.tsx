@@ -55,6 +55,15 @@ export default function CaseView(props: {
         setOutput(event.target.value);
     };
 
+    const setPassed = () => {
+        const result = props.case.result;
+        if (result && result.output.length > 0) {
+            setOutput(result.output);
+            result.pass = true;
+            minimize();
+        }
+    };
+
     const rerun = () => {
         setRunning(true);
         props.rerun(id, input, output);
@@ -161,6 +170,16 @@ export default function CaseView(props: {
                 <div className="time">
                     <button
                         className="btn btn-green"
+                        title="Set Testcase Passed"
+                        onClick={setPassed}
+                        disabled={running}
+                    >
+                        <span className="icon">
+                            <i className="codicon codicon-arrow-up"></i>
+                        </span>{' '}
+                    </button>
+                    <button
+                        className="btn"
                         title="Run Again"
                         onClick={rerun}
                         disabled={running}

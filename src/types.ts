@@ -80,6 +80,7 @@ export type Run = {
 };
 
 export type RunResult = {
+    output: string;
     pass: boolean | null;
     id: number;
 } & Run;

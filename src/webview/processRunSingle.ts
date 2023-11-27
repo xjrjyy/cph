@@ -54,6 +54,7 @@ export const runSingleAndSave = async (
         stderrorFailure;
     const result: RunResult = {
         ...run,
+        output: run.stdout,
         pass: didError ? false : isResultCorrect(testCase, run.stdout),
         id,
     };
